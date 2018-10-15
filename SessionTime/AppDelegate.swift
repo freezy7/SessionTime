@@ -12,18 +12,30 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+    
+    let popover = NSPopover()
+    
+    var eventMonitor: EventMonitor?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         
         if let button = statusItem.button {
             button.image = NSImage(named: NSImage.Name("logo"))
+            button.action = #selector(togglePopover(_:))
         }
         
-        constructMenu()
+        // configuration panel
+        popover.contentViewController = ConfigurationPanel.freshController()
+        popover.animates = false
+        
+        // click outside panel auto close
+        eventMonitor = EventMonitor(mask: [.leftMouseUp, .rightMouseDown], handler: { [weak self] event in
+            if let strongSelf = self, strongSelf.popover.isShown {
+                strongSelf.closePopover(event)
+            }
+        })
     }
-    
-    
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
@@ -38,30 +50,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem.menu = menu
     }
     
-    @objc func startSession(_ sender:Any?) {
-        if let controller = NSApplication.shared.windows[1].contentViewController as? ViewController {
-            controller.startSession()
+    @objc func togglePopover(_ sender: Any?) {
+        if popover.isShown {
+            closePopover(sender)
+        } else {
+            showPopover(sender)
         }
     }
     
-    @objc func pauseSession(_ sender:Any?) {
-        if let controller: ViewController = NSApplication.shared.windows[1].contentViewController as? ViewController {
-            controller.pauseSession()
+    func showPopover(_ sender: Any?) {
+        eventMonitor?.start()
+        
+        if let button = statusItem.button {
+            popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
         }
     }
     
-    @objc func endSession(_ sender:Any?) {
-        if let controller: ViewController = NSApplication.shared.windows[1].contentViewController as? ViewController {
-            controller.endSession()
-        }
+    func closePopover(_ sender: Any?) {
+        eventMonitor?.stop()
+        
+        popover.performClose(sender)
     }
-    
-    @objc func printQuote(_ sender:Any?) {
-        let quoteText = "Never put off until tomorrow what you can do the day after tomorrow."
-        let quoteAuthor = "Mark Twain"
-        print("\(quoteText)=\(quoteAuthor)")
-    }
-
-
 }
 

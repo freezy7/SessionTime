@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ClockPanel.swift
 //  SessionTime
 //
 //  Created by R_flava_Man on 2018/8/9.
@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class ViewController: NSViewController {
+class ClockPanel: NSViewController {
 
     @IBOutlet weak var displayTextField: NSTextField!
     
