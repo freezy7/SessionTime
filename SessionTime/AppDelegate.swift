@@ -42,12 +42,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func constructMenu() {
-        let menu = NSMenu()
-        menu.addItem(NSMenuItem(title: "开始会议", action: #selector(startSession(_:)), keyEquivalent: "S"))
-        menu.addItem(NSMenuItem(title: "暂停", action: #selector(pauseSession(_:)), keyEquivalent: "P"))
-        menu.addItem(NSMenuItem(title: "结束", action: #selector(endSession(_:)), keyEquivalent: "E"))
-        menu.addItem(NSMenuItem(title: "退出", action: #selector(endSession(_:)), keyEquivalent: "q"))
-        statusItem.menu = menu
+//        let menu = NSMenu()
+//        menu.addItem(NSMenuItem(title: "开始会议", action: #selector(startSession(_:)), keyEquivalent: "S"))
+//        menu.addItem(NSMenuItem(title: "暂停", action: #selector(pauseSession(_:)), keyEquivalent: "P"))
+//        menu.addItem(NSMenuItem(title: "结束", action: #selector(endSession(_:)), keyEquivalent: "E"))
+//        menu.addItem(NSMenuItem(title: "退出", action: #selector(endSession(_:)), keyEquivalent: "q"))
+//        statusItem.menu = menu
     }
     
     @objc func togglePopover(_ sender: Any?) {
